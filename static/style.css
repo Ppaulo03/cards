@@ -1,0 +1,286 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    font-size: 1.3vw;
+    width: 3.5vw;
+}
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+    font-size: 1.3vw;
+    width: 3.5vw;
+}
+input[type=text]{
+    font-size: 1.3vw;
+    width: 10vw;
+}
+
+body{
+    font-family: Comfortaa;
+    font-size: 1.5vw;
+    color: #1B2559;
+    background: linear-gradient(90deg,#66A6A0,#26A69A,#13534D);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow: hidden;
+    
+}
+
+header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+@media screen and (max-width: 900px){
+    header{
+        padding-top: 50%;
+    }   
+}
+@media screen and (min-width: 900px){
+    header{
+        padding-top: 0%;
+    }
+}
+
+h1{
+    font-size: 5vw;
+    text-align: center;
+}
+
+button:hover{
+    transform: scale(1.03);
+}
+
+.container{
+    margin: 10px;
+    /* background-color: black ; */
+}
+
+
+.enter{
+    position:relative;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.enter button{
+    font-size: 2.5vw;
+    position: relative;
+    padding: 5%;
+    margin-top: 5%;
+    margin-left: 1%;
+    border-radius: 10%;
+    color: #FFF;
+    background: linear-gradient(30deg,#737EB1,#354AB1,#1B2559); 
+    box-shadow:0 20px 25px  rgba(27, 37, 89, 0.5); 
+
+}
+.enter .btns{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.enter .back{
+    font-size: 1.5vw;
+    width: auto;
+}
+.enter button:hover{
+    background: linear-gradient(30deg,#443A59,#2F1B59,#180E2D);
+    color: #FFF;
+}
+.enter form{
+    
+    padding: 5%;
+    background-color: #1B2559;
+    border:  #FFF solid;
+    border-radius: 5%;
+
+    color:white;
+    font-size: 120%;
+    position:relative;
+    width: 50%;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+#room_reader h1{
+    text-align: center;
+    font-size: 5vw;
+}
+
+.lobby, .gaming{
+    position:relative;
+    width: 100%;
+    margin-left: 2%;
+}
+.lobby button, #InGame button{
+    font-size: 1.5vw;
+    position: relative;
+    padding : 1% 2% 1% 2%;
+    border-radius: 10%;
+    color: #FFF;
+    background: linear-gradient(30deg,#737EB1,#354AB1,#1B2559); 
+    box-shadow:0 20px 25px  rgba(27, 37, 89, 0.5); 
+}
+
+.lobby button:hover, #InGame button:hover{
+    background: linear-gradient(30deg,#443A59,#2F1B59,#180E2D);
+    color: #FFF;
+}
+
+.lobby .back{
+    position: relative;
+    float: left;
+    top: 30vw;
+    left: 2vw;
+}
+
+.list_players{
+
+    color:white;
+    font-size: 90%;
+
+    position:absolute;
+    width: 20%;
+    top: -10vw;
+    left: 0px;
+    /* bottom: 8vw; */
+    padding: 1% 2% 2% 1%;
+
+    background-color: #1B2559;
+    border:  #FFF solid;
+    border-radius: 5%;
+    
+}
+.list_players button{
+    width: 50%;
+}
+.list_players ul, .list_players ol{
+    font-size:  2vw;
+    padding: 5% 10% 5% 10%;
+}
+
+#Console{
+    position: fixed;
+    top: 20vw;
+    left: 5vw;
+    z-index: 2;
+    
+    width: 20vw;
+    height: 15vw;
+
+    overflow: auto;
+
+}
+#Console .showMsg{
+    position: relative;
+    width: 95%;
+    min-height: 15%;
+    max-height: 75%;
+    margin-bottom: 0.5vw;
+    padding-left: 2%;
+    background: rgba(255, 255, 255, 0.5);
+
+    border: #000 solid;
+    border-width: thin;
+    border-radius: 5%;
+
+    overflow: auto;
+    font-size: 75%;
+}
+
+.chat{
+    position: absolute;
+    width: 45%;
+    height: 30vw;
+    top: 0vw;
+    left: 25vw;
+    padding: 1% 1% 2% 5%;
+
+    background-color: rgb(190, 199, 248);
+    border:  #1B2559 solid;
+    border-radius: 5%;
+}
+.chat .message{
+    position: relative;
+    width: 75%;
+}
+.chat .showMsg{
+    position: relative;
+    width: 90%;
+    min-height: 15%;
+    max-height: 50%;
+    margin-bottom: 0.5vw;
+    padding-left: 2%;
+    background: white;
+
+    border: #000 solid;
+    border-width: thin;
+    border-radius: 5%;
+
+    overflow: auto;
+    font-size: 75%;
+}
+.chat button{
+    font-size: 1vw;
+    color: white;
+    border-radius: 25%;
+}
+.chat button:hover{
+    transform: scale(1.1);
+}
+
+.hand{
+    position: relative;
+    top: 10vw;
+    margin: 10px;
+}
+
+#InGame img, .central{
+    width: 9.5vw;
+    height: 12vw;
+}
+
+.hand .cards{
+    position: absolute;
+    display: inline-block;
+    width: 9.5vw;
+    height: 12vw;
+}
+
+.hand .cards:hover{
+    transform: scale(1.2);
+    bottom: -8vw;
+}
+
+#monte{
+    position: relative;
+    top: -10vw;
+    left: 80vw;
+}
+.goHand {
+    -webkit-transition: 3s;
+    -moz-transition: 3s;
+    -ms-transition: 3s;
+    -o-transition: 3s;
+    transition: 3s;
+    left: -35vw;
+}
+
+#mesa{
+    position: relative;
+    top: 2.5vw;
+    left: 45vw;
+}
+
+#OrderPlayers .conterCards{
+    width: 1vw; 
+    height: 1.3vw;
+    padding-left: 1vw;
+}

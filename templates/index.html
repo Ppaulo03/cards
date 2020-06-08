@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Entrance Hall</title>
+    <link href="./static/style.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'>
+</head>
+
+<body>
+
+    <header>
+        <h1 style="padding-top: 5%;">Cards Online</h1>
+    </header>
+
+    <main>
+        <div class="enter">
+            <div class="container">
+                <div class='btns'>
+                    <button id="b1" onclick="createRoom()">Create Room</button>
+                    <button id="b2" onclick="enterRoom()">Enter Room</button>
+                </div>
+
+                <form id="enterRoom" action="enterRoom" method="POST" hidden>
+                    <label for="name">Write your name:</label>
+                    <input id='name' name='name' type="text" maxlength="12" required> <br>
+                    <label for="room">Enter the Room Number:</label>
+                    <input id='room' name='room' type="number" required> <br>
+                    <span id="notFound" style="color:red;"></span>
+                    <button type='send'> Enter Room</button><br>
+                    <button type='button' class='back' onclick="goBack()">Back</button>
+                </form>
+
+                <form id="createRoom" action="createRoom" EventListener="processForm()" method="POST" hidden>
+                    <label for="name_create">Write your name:</label>
+                    <input id='name_create' name='name' type="text" maxlength="12" required> <br>
+                    <button type="send"> Create Room</button>
+                    <button type='button' class='back' onclick="goBack()">Back</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>
+    <script type="text/javascript" src="./static/hall.js"></script>
+</body>
+
+</html>

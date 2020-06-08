@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Looby</title>
+    <link href="./static/style.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'>
+</head>
+
+<body>
+    <input type="hidden" id="room-number" value="{{number}}">
+    <input type="hidden" id="id-player" value="{{id}}">
+    <main>
+        <header id="room_reader">
+            <h1>No name yet</h1>
+        </header>
+
+        <div id="Console" hidden>
+            <div id="msg_console" class="showMsg"></div>
+            <input id="message_console" class="message" type="text" name="message">
+            <button onclick="sendMsg('console')">Send</button>
+        </div>
+
+        <div id="Looby">
+            <div class="lobby">
+                <div class="list_players">
+                    <h2>Room - {{number}}</h2>
+                    <h3>Players</h3>
+                    <ul id="players"></ul>
+                    <button onclick="play()">Play</button><br>
+                    <span id="fewPlayers"></span>
+                </div>
+                <button type='button' class='back' onclick="back()">Back</button>
+                <div id="chatbox" class="chat">
+                    <h3>ChatBox</h3>
+                    <div id="msg" class="showMsg"></div>
+                    <input id="message" class="message" type="text" name="message">
+                    <button onclick="sendMsg('chat')">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="InGame" hidden>
+            <div id="subdiv_gaming" class="gaming">
+                <div id="OrderPlayers" class="list_players">
+                    <h2>Room - {{number}}</h2>
+                    <ol id="order"></ol>
+                    <button type='button' onclick="back()">Quit</button>
+                </div>
+
+                <div id="monte" onclick="buyCard(1)"></div>
+                <div class="central"><img id="mesa" src="#" alt=""> </div>
+                <div id="Hand" class="hand"></div>
+            </div>
+        </div>
+
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>
+    <script type="text/javascript" src="./static/room.js"></script>
+
+</body>
+
+</html>
