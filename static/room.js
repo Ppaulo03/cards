@@ -365,7 +365,7 @@ function playCard(ev) {
             if (card_name[0] == card_mesa_name[0] || card_name[1] == card_mesa_name[1]) {
                 turn = false;
                 var pos_card = ev.target.id.split("ordem_cards: ").pop(0)
-                axios.post('http://127.0.0.1:5000/playCard', { pos_card, room, value_id });
+                axios.post('/playCard', { pos_card, room, value_id });
                 ev.target.remove();
                 pos_card = null;
             }
@@ -465,9 +465,9 @@ function buyCard(num) {
                     }
                 }
 
-                axios.post('http://127.0.0.1:5000/buy', { room, value_id, buying });
+                axios.post('/buy', { room, value_id, buying });
                 if (monte.children.length == 0) {
-                    axios.post('http://127.0.0.1:5000/getRoom', { room, value_id }).then((r) => {
+                    axios.post('/getRoom', { room, value_id }).then((r) => {
                         monte_handler(r.data.monte)
                     });
                 }
