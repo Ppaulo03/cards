@@ -13,8 +13,7 @@ log.setLevel(logging.ERROR)
 
 app = Flask(__name__)
 rooms = dict()
-# effects = ['inv', 'block', 'mais2']
-effects = ['mais2']
+effects = ['inv', 'block', 'mais2']
 
 
 @app.route('/')
@@ -295,15 +294,11 @@ def create_deck():
         for num in range(0, 10):
             card = ['norm', str(num), cor]
             deck.append(card)
-            # if num != 1:
-            #     deck.append(card)
+            if num != 1:
+                deck.append(card)
 
         for special in effects:
             card = ['norm', special, cor]
-            deck.append(card)
-            deck.append(card)
-            deck.append(card)
-            deck.append(card)
             deck.append(card)
             deck.append(card)
 
