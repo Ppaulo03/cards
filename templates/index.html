@@ -24,7 +24,7 @@
 
                 <form id="enterRoom" action="enterRoom" method="POST" hidden>
                     <label for="name">Write your name:</label>
-                    <input id='name' name='name' type="text" maxlength="12" required> <br>
+                    <input id='name' name='name' type="text" maxlength="10" required> <br>
                     <label for="room">Enter the Room Number:</label>
                     <input id='room' name='room' type="number" required> <br>
                     <span id="notFound" style="color:red;"></span>
@@ -34,7 +34,7 @@
 
                 <form id="createRoom" action="createRoom" EventListener="processForm()" method="POST" hidden>
                     <label for="name_create">Write your name:</label>
-                    <input id='name_create' name='name' type="text" maxlength="12" required> <br>
+                    <input id='name_create' name='name' type="text" maxlength="10" required> <br>
                     <button type="send"> Create Room</button>
                     <button type='button' class='back' onclick="goBack()">Back</button>
                 </form>

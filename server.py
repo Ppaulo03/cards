@@ -128,11 +128,10 @@ def play():
     data = simplejson.loads(request.data)
 
     if not rooms[data['room']]['playing']:
-
+        reset_room(data['room'])
         if len(rooms[data['room']]['id'].keys()) == 1:
             return "Few Players"
         else:
-
             order = [[player, value_id, 0]
                      for value_id, player in rooms[data['room']]['id'].items()
                      ]
@@ -234,7 +233,7 @@ def buy_card():
 @ app.route('/reset', methods=['POST'])
 def reset():
     data = simplejson.loads(request.data)
-    reset_room(data['room'])
+    rooms[room_num]['playing'] = False
     return "OK"
 # End of Ingame Functions
 

@@ -283,3 +283,23 @@ button:hover{
     height: 1.3vw;
     padding-left: 1vw;
 }
+
+.popEnd {
+    position: absolute;
+    top: 0vw;
+    left: 25vw;
+
+    width: 40vw;
+    height: 20vw;
+
+
+    border-style: solid;
+    border-radius: 25%;
+    background: #00e1ff;
+    display: none;
+
+    color: black;
+    font-family: 'Luckiest Guy';
+    font-size: 3vw;
+    text-align: center;
+}

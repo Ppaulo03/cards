@@ -6,6 +6,7 @@
     <title>Looby</title>
     <link href="./static/style.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Luckiest+Guy' rel='stylesheet'>
 </head>
 
 <body>
@@ -52,8 +53,19 @@
                 <div id="monte" onclick="buyCard(1)"></div>
                 <div class="central"><img id="mesa" src="#" alt=""> </div>
                 <div id="Hand" class="hand"></div>
+
+                <div id="won" class="popEnd">
+                    <br><br>Congratulations, <br> You WON !!!<br><br>
+                    <button onclick="fechar()"> Return to waiting room</button>
+                </div>
+                <div id="loose" class="popEnd">
+                    <br><br><span id="winnerName"></span> <br> WON THE GAME<br><br>
+                    <button onclick="fechar()"> RETURN TO WAITING ROOM</button><br>
+                </div>
             </div>
         </div>
+
+
 
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>

@@ -49,7 +49,8 @@ const poll = async ({ fn, interval, maxAttempts }) => {
 
 };
 
-var isTurn = false
+var waiting = false;
+var isTurn = false;;
 var buying = true
 var lobbying = true;
 var spc = false;
@@ -62,8 +63,7 @@ function getRoom() {
             window.location.replace('/')
         }
 
-        else {
-
+        else if (!waiting) {
             msg_handler(r.data.chat);
             if (lobbying) {
 
@@ -85,6 +85,20 @@ function getRoom() {
                 }
 
             }
+
+            else if (r.data.winner[0]) {
+                mesa_handler(r.data.mesa);
+                list_ingame_handler(r.data.order, r.data.turn, r.data.hands)
+                if (r.data.winner[1] == value_id) {
+                    document.getElementById('won').style.display = 'block';
+                }
+                else {
+                    document.getElementById('winnerName').textContent = r.data.id[r.data.winner[1]];
+                    document.getElementById('loose').style.display = 'block';
+                }
+                waiting = true;
+            }
+
             else {
 
                 if (monte.length != r.data.monte.length) {
@@ -353,7 +367,16 @@ function back() {
     axios.post('/leave', { room, value_id })
     window.location.replace('./');
 }
-
+function fechar() {
+    document.getElementById('won').style.display = 'none';
+    document.getElementById('loose').style.display = 'none';
+    document.getElementById("message_console").value = "";
+    document.getElementById("Console").hidden = true;
+    document.getElementById("Looby").hidden = false;
+    document.getElementById("InGame").hidden = true;
+    lobbying = true;
+    waiting = false;
+}
 
 //games onClick functions:
 function playCard(ev) {
