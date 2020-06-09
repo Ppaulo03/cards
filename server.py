@@ -225,7 +225,6 @@ def play_card():
 
     rooms[data['room']]['mesa'].append(card)
     end_turn(data['room'], data['value_id'])
-    print(rooms[data['room']]['order'])
     return "OK"
 
 

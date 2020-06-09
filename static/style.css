@@ -34,15 +34,15 @@ header{
     width: 100%;
 }
 
-@media screen and (max-width: 1000px){
-    header{
-        padding-top: 50%;
-    }   
-}
-@media screen and (min-width: 1000px){
+@media screen and (max-height: 900px){
     header{
         padding-top: 0%;
     }
+}
+@media screen and (min-height: 900px){
+    header{
+        padding-top: 50%;
+    }   
 }
 
 h1{

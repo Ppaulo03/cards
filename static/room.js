@@ -17,7 +17,6 @@ const mesa = document.getElementById("mesa");
 
 document.addEventListener('keypress', function (e) {
     if (e.key == "Enter") {
-
         if (lobbying) {
             if (document.getElementById("message").value != "")
                 sendMsg('chat');
@@ -53,7 +52,7 @@ var waiting = false;
 var isTurn = false;;
 var buying = true
 var lobbying = true;
-var spc = false;
+
 var msg_index = 0;
 var pos = 0;
 var lastStack = null;
@@ -106,15 +105,17 @@ function getRoom() {
                     monte_handler(r.data.monte);
                     list_ingame_handler(r.data.order, r.data.turn, r.data.hands);
                 }
+
                 if (lista_ordem.children.length != r.data.order.length) {
                     list_ingame_actualiser(r.data.order, r.data.turn, r.data.hands);
                 }
 
-                if ((isTurn || hand_cards.children.length != r.data.hands[value_id].length) && !spc) {
+                if ((isTurn || hand_cards.children.length != r.data.hands[value_id].length)) {
                     hand_handler(r.data.hands, r.data.buying, r.data.stack);
                 }
 
                 if (player_turn[1] != r.data.turn[1] || player_turn[2] != r.data.turn[2]) {
+
                     mesa_handler(r.data.mesa);
                     if (r.data.turn[1] == value_id) {
                         isTurn = true;
@@ -130,6 +131,7 @@ function getRoom() {
                                 document.getElementById("comprar").setAttribute("onClick", "buyStack(2)")
                                 document.getElementById("comprar").style.display = "block";
                             }
+
                             if (r.data.stack[0] == '+4') {
                                 document.getElementById("comprar").setAttribute("onClick", "buyStack(4)")
                                 document.getElementById("comprar").style.display = "block";
@@ -138,6 +140,7 @@ function getRoom() {
                         lastStack = r.data.stack;
                         cont = null;
                     }
+
                     else if (lastStack != null) {
                         var cont = 1;
                         var last_one = r.data.order[r.data.order.length - 1];
@@ -209,8 +212,10 @@ function list_ingame_actualiser(player_order, turn, hands) {
 
         if (turn[1] == parseInt(player[1][1])) player_li.style.color = "#f00";
         else player_li.style.color = "#fff";
-        if (parseInt(player[1][1]) == value_id) player_li.style.fontWeight = "bold";
-
+        if (parseInt(player[1][1]) == value_id) {
+            player_li.style.fontSize = "2.1vw";
+            player_li.style.fontWeight = "bold";
+        }
         var img_cardVerso = document.createElement('img');
         img_cardVerso.src = './static/img/verso.png';
         img_cardVerso.classList.add("conterCards");
@@ -303,6 +308,7 @@ function hand_handler(hands, isbuying, stacking) {
         }
 
         else if (stacking[0] == 'mais2') {
+
             var canStack = false;
             Object.entries(hand_cards.children).forEach(card => {
                 var card_name = card[1].name.split(",");
@@ -348,6 +354,8 @@ function hand_handler(hands, isbuying, stacking) {
         }
     }
 }
+
+
 function mesa_handler(mesa_info) {
 
     var new_mesa = mesa_info[mesa_info.length - 1];
@@ -508,7 +516,8 @@ function chooseColor(color) {
 }
 
 function buyStack(num) {
-
+    waiting = true;
+    document.getElementById("comprar").style.display = "none";
     buyCard(lastStack[1] * num, false);
 }
 
@@ -574,6 +583,7 @@ function buyCard(num, grayed) {
                         }
                         else if (!grayed) {
                             document.getElementById("comprar").style.display = "none";
+                            waiting = false;
                             axios.post('/pass', { room, value_id })
                         }
 
