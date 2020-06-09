@@ -548,7 +548,7 @@ function buyCard(num, grayed) {
 
                 if (grayed) {
                     var card_na_mesa = mesa.name.split(",");
-                    if (comprada_name[1] == 'neutral' || comprada_name[0] == card_na_mesa[0] || comprada_name[1] == card_na_mesa[1]) {
+                    if (comprada_name[1] == 'zeutral' || comprada_name[0] == card_na_mesa[0] || comprada_name[1] == card_na_mesa[1]) {
                         buying = false;
                         new_card.setAttribute("data-bought", "bought");
                     }
