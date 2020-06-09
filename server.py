@@ -324,11 +324,11 @@ def create_deck():
         deck.append(['spc', '+4', 'zeutral'])
         deck.append(['spc', 'change', 'zeutral'])
 
-        for num in range(0, 3):
+        for num in range(0, 10):
             card = ['norm', str(num), cor]
             deck.append(card)
-            # if num != 1:
-            #     deck.append(card)
+            if num != 1:
+                deck.append(card)
 
         for special in effects:
             card = ['norm', special, cor]
