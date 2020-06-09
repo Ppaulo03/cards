@@ -34,12 +34,12 @@ header{
     width: 100%;
 }
 
-@media screen and (max-width: 800px){
+@media screen and (max-width: 1000px){
     header{
         padding-top: 50%;
     }   
 }
-@media screen and (min-width: 800px){
+@media screen and (min-width: 1000px){
     header{
         padding-top: 0%;
     }
@@ -334,4 +334,10 @@ button:hover{
 }
 .choosing_color .green{
     background: #00bfa5 !important;
+}
+#comprar{
+    position: absolute !important;
+    top: 6vw;
+    left: 80vw;
+    display: none;
 }

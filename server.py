@@ -191,17 +191,23 @@ def play_card():
     rooms[data['room']]['buying'] = True
     if card[1] in effects or card[1] in ['+4', 'change']:
 
-        if rooms[data['room']]['stack'] is not None:
-            rooms[data['room']]['stack'][1] += 1
-
-        elif card[1] == 'mais2':
-            rooms[data['room']]['stack'] = ['mais2', 1]
+        if card[1] == 'mais2':
             rooms[data['room']]['buying'] = False
+
+            if rooms[data['room']]['stack'] is not None:
+                rooms[data['room']]['stack'][1] += 1
+
+            else:
+                rooms[data['room']]['stack'] = ['mais2', 1]
 
         elif card[1] == '+4':
-            card[2] = data['color']
-            rooms[data['room']]['stack'] = ['+4', 1]
             rooms[data['room']]['buying'] = False
+            card[2] = data['color']
+
+            if rooms[data['room']]['stack'] is not None:
+                rooms[data['room']]['stack'][1] += 1
+            else:
+                rooms[data['room']]['stack'] = ['+4', 1]
 
         elif card[1] == 'change':
             card[2] = data['color']
@@ -246,6 +252,10 @@ def buy_card():
         old_mesa = rooms[data['room']]['mesa'][:]
         shuffle(old_mesa)
         rooms[data['room']]['monte'] = old_mesa
+
+        for card in rooms[data['room']]['monte']:
+            if card[0] == "spc":
+                card[2] = "zeutral"
 
         rooms[data['room']]['mesa'] = []
         rooms[data['room']]['mesa'].append(atual_mesa)
@@ -314,11 +324,11 @@ def create_deck():
         deck.append(['spc', '+4', 'zeutral'])
         deck.append(['spc', 'change', 'zeutral'])
 
-        for num in range(0, 10):
+        for num in range(0, 3):
             card = ['norm', str(num), cor]
             deck.append(card)
-            if num != 1:
-                deck.append(card)
+            # if num != 1:
+            #     deck.append(card)
 
         for special in effects:
             card = ['norm', special, cor]
@@ -331,10 +341,8 @@ def create_deck():
 
 def end_turn(room_num, player_id):
     actual = rooms[room_num]['order'].pop(0)
+    actual[2] += 1
     rooms[room_num]['order'].append(actual)
-
-    if rooms[room_num]['order'][0] == actual:
-        rooms[room_num]['order'][0][2] += 1
 
     rooms[room_num]['turn'] = rooms[room_num]['order'][0]
     rooms[room_num]['hands'][player_id].sort(key=itemgetter(2, 1))

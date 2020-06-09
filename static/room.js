@@ -56,6 +56,8 @@ var lobbying = true;
 var spc = false;
 var msg_index = 0;
 var pos = 0;
+var lastStack = null;
+
 function getRoom() {
     axios.post('/getRoom', { room }).then((r) => {
 
@@ -123,32 +125,36 @@ function getRoom() {
                     list_ingame_handler(r.data.order, r.data.turn, r.data.hands)
 
                     if (r.data.stack != null) {
+                        if (player_turn[1] == value_id) {
+                            if (r.data.stack[0] == 'mais2') {
+                                document.getElementById("comprar").setAttribute("onClick", "buyStack(2)")
+                                document.getElementById("comprar").style.display = "block";
+                            }
+                            if (r.data.stack[0] == '+4') {
+                                document.getElementById("comprar").setAttribute("onClick", "buyStack(4)")
+                                document.getElementById("comprar").style.display = "block";
+                            }
+                        }
+                        lastStack = r.data.stack;
+                        cont = null;
+                    }
+                    else if (lastStack != null) {
                         var cont = 1;
+                        var last_one = r.data.order[r.data.order.length - 1];
                         Object.entries(lista_ordem.children).every(element => {
-                            if (element[1].id == 'player_ordem' + player_turn[1]) {
+                            if (element[1].id == 'player_ordem' + last_one[1]) {
                                 return false;
                             }
                             cont += 1;
                             return true;
                         });
-
-                        if (player_turn[1] != value_id) {
-                            if (r.data.stack[0] == 'mais2')
-                                animationMais(r.data.stack[1] * 2, cont);
-                            if (r.data.stack[0] == '+4')
-                                animationMais(r.data.stack[1] * 4, cont);
+                        if (last_one[1] != value_id) {
+                            if (lastStack[0] == 'mais2')
+                                animationMais(lastStack[1] * 2, cont);
+                            if (lastStack[0] == '+4')
+                                animationMais(lastStack[1] * 4, cont);
                         }
-                        else {
-                            if (r.data.stack[0] == 'mais2') {
-                                buyCard(r.data.stack[1] * 2, false)
-                            }
-                            if (r.data.stack[0] == '+4') {
-                                buyCard(r.data.stack[1] * 4, false)
-                            }
-                        }
-
-                        cont = null;
-
+                        lastStack = null;
                     }
                 }
             }
@@ -287,12 +293,59 @@ function hand_handler(hands, isbuying, stacking) {
     som_hand = null;
 
     buying = isbuying;
-    if (isTurn && !buying && stacking == null) {
-        hand_cards.children[hand_cards.children.length - 1].setAttribute("data-bought", "bought");
-        Object.entries(hand_cards.children).forEach(card => {
-            if (card[1].getAttribute("data-bought") != "bought")
-                card[1].style.background = "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7))," + card[1].style.background
-        });
+    if (isTurn && !buying) {
+        if (stacking == null) {
+            hand_cards.children[hand_cards.children.length - 1].setAttribute("data-bought", "bought");
+            Object.entries(hand_cards.children).forEach(card => {
+                if (card[1].getAttribute("data-bought") != "bought")
+                    card[1].style.background = "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7))," + card[1].style.background;
+            });
+        }
+
+        else if (stacking[0] == 'mais2') {
+            var canStack = false;
+            Object.entries(hand_cards.children).forEach(card => {
+                var card_name = card[1].name.split(",");
+                if (card_name[0] == "mais2") {
+                    card[1].setAttribute("data-bought", "bought");
+                    canStack = true;
+                } else
+                    card[1].style.background = "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7))," + card[1].style.background;
+                card_name = null;
+            });
+            if (!canStack) {
+                document.getElementById("comprar").style.display = "none";
+                buyCard(stacking[1] * 2, false);
+            } else {
+                lastStack = stacking;
+                document.getElementById("comprar").setAttribute("onClick", "buyStack(2)")
+                document.getElementById("comprar").style.display = "block";
+            }
+
+            canStack = null;
+        }
+
+        else if (stacking[0] == '+4') {
+            var canStack = false;
+            Object.entries(hand_cards.children).forEach(card => {
+                var card_name = card[1].name.split(",")
+                if (card_name[0] == "+4") {
+                    card[1].setAttribute("data-bought", "bought")
+                    canStack = true;
+                } else
+                    card[1].style.background = "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7))," + card[1].style.background;
+                card_name = null;
+            });
+            if (!canStack) {
+                document.getElementById("comprar").style.display = "none";
+                buyCard(stacking[1] * 4, false);
+            } else {
+                lastStack = stacking;
+                document.getElementById("comprar").setAttribute("onClick", "buyStack(4)")
+                document.getElementById("comprar").style.display = "block";
+            }
+            canStack = null;
+        }
     }
 }
 function mesa_handler(mesa_info) {
@@ -454,6 +507,11 @@ function chooseColor(color) {
     });
 }
 
+function buyStack(num) {
+
+    buyCard(lastStack[1] * num, false);
+}
+
 var buying_anim = false;
 function buyCard(num, grayed) {
     if (isTurn) {
@@ -514,8 +572,11 @@ function buyCard(num, grayed) {
                         if (num > 1) {
                             buyCard(num - 1, grayed);
                         }
-                        else if (!grayed)
+                        else if (!grayed) {
+                            document.getElementById("comprar").style.display = "none";
                             axios.post('/pass', { room, value_id })
+                        }
+
 
                     } else {
 
