@@ -1,3 +1,5 @@
+//Version 0.1536.9.6.2020
+
 //server contact functions
 function formCreate(e, ) {
     if (e.preventDefault) e.preventDefault();

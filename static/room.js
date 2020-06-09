@@ -1,3 +1,5 @@
+//Version 0.1536.9.6.2020
+
 // User Info - Room and Id
 const room = document.getElementById("room-number").getAttribute("value");
 const value_id = document.getElementById("id-player").getAttribute("value");
@@ -53,6 +55,7 @@ var isTurn = false;;
 var buying = true
 var lobbying = true;
 
+var player_turn = [null, null, null];
 var msg_index = 0;
 var pos = 0;
 var lastStack = null;

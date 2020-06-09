@@ -326,7 +326,7 @@ def create_deck():
         for num in range(0, 10):
             card = ['norm', str(num), cor]
             deck.append(card)
-            if num != 1:
+            if num != 0:
                 deck.append(card)
 
         for special in effects:
