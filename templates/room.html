@@ -50,10 +50,15 @@
                     <button type='button' onclick="back()">Quit</button>
                 </div>
 
-                <div id="monte" onclick="buyCard(1)"></div>
+                <div id="monte" onclick="buyCard(1,true)"></div>
                 <div class="central"><img id="mesa" src="#" alt=""> </div>
                 <div id="Hand" class="hand"></div>
-
+                <div id="choose_color" class="choosing_color">
+                    <button class="azul" onclick="chooseColor('azul')"></button>
+                    <button class="green" onclick="chooseColor('verde')"></button>
+                    <button class="yellow" onclick="chooseColor('amarelo')"></button>
+                    <button class="pink" onclick="chooseColor('rosa')"></button>
+                </div>
                 <div id="won" class="popEnd">
                     <br><br>Congratulations, <br> You WON !!!<br><br>
                     <button onclick="fechar()"> Return to waiting room</button>

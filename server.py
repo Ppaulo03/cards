@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect
 from random import randint, shuffle
 from operator import itemgetter
 import simplejson
+import pdb
 
 
 # Limit Flask logger to only errors
@@ -56,6 +57,9 @@ def enter_room():
 
         elif rooms[data['room']]['playing']:
             return 'In game'
+
+        elif rooms[data['room']]['connected'] == 5:
+            return 'Maxed'
 
         else:
             rooms[data['room']]['connected'] += 1
@@ -148,7 +152,7 @@ def play():
             while True:
                 mesa = deck.pop(0)
                 rooms[data['room']]['mesa'].append(mesa)
-                if mesa[1] not in effects:
+                if mesa[1] not in effects and mesa[1] not in ["+4", "change"]:
                     break
 
             rooms[data['room']]['hands'] = hands
@@ -177,26 +181,45 @@ def play_card():
 
     card = rooms[data['room']]['hands'][data['value_id']].pop(
         int(data['pos_card']))
-    rooms[data['room']]['mesa'].append(card)
 
     if len(rooms[data['room']]['hands'][data['value_id']]) == 0:
+        rooms[data['room']]['mesa'].append(card)
         rooms[data['room']]['winner'] = [True, data['value_id']]
         rooms[data['room']]['playing'] = False
         return 'EndGame'
 
     rooms[data['room']]['buying'] = True
-    # if card[1] in effects:
+    if card[1] in effects or card[1] in ['+4', 'change']:
 
-    #     if rooms[data['room']]['stack'] is not None:
-    #         rooms[data['room']]['stack'][1] += 1
+        if rooms[data['room']]['stack'] is not None:
+            rooms[data['room']]['stack'][1] += 1
 
-    #     elif card[1] == 'mais2':
-    #         rooms[data['room']]['stack'] = ['mais2', 1]
-    #         rooms[data['room']]['buying'] = False
-    # else:
-    #     rooms[data['room']]['stack'] = None
+        elif card[1] == 'mais2':
+            rooms[data['room']]['stack'] = ['mais2', 1]
+            rooms[data['room']]['buying'] = False
 
+        elif card[1] == '+4':
+            card[2] = data['color']
+            rooms[data['room']]['stack'] = ['+4', 1]
+            rooms[data['room']]['buying'] = False
+
+        elif card[1] == 'change':
+            card[2] = data['color']
+
+        elif card[1] == 'block':
+            end_turn(data['room'], data['value_id'])
+
+        elif card[1] == 'inv':
+            actual = rooms[data['room']]['order'].pop(0)
+            rooms[data['room']]['order'].append(actual)
+            rooms[data['room']]['order'].reverse()
+
+    else:
+        rooms[data['room']]['stack'] = None
+
+    rooms[data['room']]['mesa'].append(card)
     end_turn(data['room'], data['value_id'])
+    print(rooms[data['room']]['order'])
     return "OK"
 
 
@@ -288,8 +311,9 @@ def kick(room_num, name, id_ready=False):
 def create_deck():
     deck = list()
     for cor in ['azul', 'amarelo', 'rosa', 'verde']:
-        # deck.append(['spc', '+4', 'neutral'])
-        # deck.append(['spc', 'change', 'neutral'])
+        deck.append(['spc', '+4', 'zeutral'])
+        deck.append(['spc', 'change', 'zeutral'])
+
         for num in range(0, 10):
             card = ['norm', str(num), cor]
             deck.append(card)

@@ -100,7 +100,6 @@ function getRoom() {
             }
 
             else {
-
                 if (monte.length != r.data.monte.length) {
                     monte_handler(r.data.monte);
                     list_ingame_handler(r.data.order, r.data.turn, r.data.hands);
@@ -112,6 +111,7 @@ function getRoom() {
                 if ((isTurn || hand_cards.children.length != r.data.hands[value_id].length) && !spc) {
                     hand_handler(r.data.hands, r.data.buying, r.data.stack);
                 }
+
                 if (player_turn[1] != r.data.turn[1] || player_turn[2] != r.data.turn[2]) {
                     mesa_handler(r.data.mesa);
                     if (r.data.turn[1] == value_id) {
@@ -122,10 +122,38 @@ function getRoom() {
                     player_turn = r.data.turn
                     list_ingame_handler(r.data.order, r.data.turn, r.data.hands)
 
+                    if (r.data.stack != null) {
+                        var cont = 1;
+                        Object.entries(lista_ordem.children).every(element => {
+                            if (element[1].id == 'player_ordem' + player_turn[1]) {
+                                return false;
+                            }
+                            cont += 1;
+                            return true;
+                        });
+
+                        if (player_turn[1] != value_id) {
+                            if (r.data.stack[0] == 'mais2')
+                                animationMais(r.data.stack[1] * 2, cont);
+                            if (r.data.stack[0] == '+4')
+                                animationMais(r.data.stack[1] * 4, cont);
+                        }
+                        else {
+                            if (r.data.stack[0] == 'mais2') {
+                                buyCard(r.data.stack[1] * 2, false)
+                            }
+                            if (r.data.stack[0] == '+4') {
+                                buyCard(r.data.stack[1] * 4, false)
+                            }
+                        }
+
+                        cont = null;
+
+                    }
                 }
             }
         }
-    })
+    });
 }
 
 // lobby and message handlers
@@ -259,7 +287,7 @@ function hand_handler(hands, isbuying, stacking) {
     som_hand = null;
 
     buying = isbuying;
-    if (!buying && stacking == null) {
+    if (isTurn && !buying && stacking == null) {
         hand_cards.children[hand_cards.children.length - 1].setAttribute("data-bought", "bought");
         Object.entries(hand_cards.children).forEach(card => {
             if (card[1].getAttribute("data-bought") != "bought")
@@ -385,8 +413,14 @@ function playCard(ev) {
             var card_name = ev.target.name.split(",")
             var card_mesa_name = mesa.name.split(",");
 
-            if (card_name[0] == card_mesa_name[0] || card_name[1] == card_mesa_name[1]) {
-                turn = false;
+            if (card_name[1] == "zeutral") {
+                isTurn = false;
+                document.getElementById("choose_color").setAttribute("data-info", ev.target.id)
+                document.getElementById("choose_color").style.display = 'block';
+            }
+
+            else if (card_name[0] == card_mesa_name[0] || card_name[1] == card_mesa_name[1]) {
+                isTurn = false;
                 var pos_card = ev.target.id.split("ordem_cards: ").pop(0)
                 axios.post('/playCard', { pos_card, room, value_id });
                 ev.target.remove();
@@ -395,15 +429,35 @@ function playCard(ev) {
 
             card_name = null;
             card_mesa_name = null;
+            axios.post('/getRoom', { room, value_id }).then((r) => {
+                hand_handler(r.data.hands, r.data.buying, r.data.stack);
+            });
         }
     }
 }
 
+function chooseColor(color) {
+    target = document.getElementById(document.getElementById("choose_color").getAttribute("data-info"));
+    document.getElementById('choose_color').style.display = 'none';
+    var card_name = target.name.split(",")
+    var card_mesa_name = mesa.name.split(",");
+
+    var pos_card = target.id.split("ordem_cards: ").pop(0)
+    axios.post('/playCard', { pos_card, room, value_id, color });
+    target.remove();
+    pos_card = null;
+
+    card_name = null;
+    card_mesa_name = null;
+    axios.post('/getRoom', { room, value_id }).then((r) => {
+        hand_handler(r.data.hands, r.data.buying, r.data.stack);
+    });
+}
+
 var buying_anim = false;
-var times = 0;
-function buyCard(num) {
+function buyCard(num, grayed) {
     if (isTurn) {
-        if ((buying || num > 1)) {
+        if (buying || !grayed) {
             if (!buying_anim) {
                 buying_anim = true;
                 var comprada = monte.children;
@@ -425,7 +479,7 @@ function buyCard(num) {
                 else pos += 1.5;
 
 
-                if (num == 1) {
+                if (grayed) {
                     var card_na_mesa = mesa.name.split(",");
                     if (comprada_name[1] == 'neutral' || comprada_name[0] == card_na_mesa[0] || comprada_name[1] == card_na_mesa[1]) {
                         buying = false;
@@ -450,18 +504,18 @@ function buyCard(num) {
                         comprada.remove();
                         comprada = null;
 
-                        if (!buying && num == 1)
+                        if (!buying && grayed)
                             Object.entries(hand_cards.children).forEach(e => e[1].style.background = "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7))," + e[1].style.background);
                         hand_cards.appendChild(new_card);
 
                         new_card = null;
                         buying_anim = false;
-                        times += 1;
-                        if (times < num) {
-                            buyCard(num);
-                        } else {
-                            times = 0;
+
+                        if (num > 1) {
+                            buyCard(num - 1, grayed);
                         }
+                        else if (!grayed)
+                            axios.post('/pass', { room, value_id })
 
                     } else {
 
@@ -498,8 +552,6 @@ function buyCard(num) {
         }
     }
 }
-
-
 
 poll({
     fn: getRoom,

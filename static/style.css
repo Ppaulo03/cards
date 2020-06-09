@@ -292,7 +292,6 @@ button:hover{
     width: 40vw;
     height: 20vw;
 
-
     border-style: solid;
     border-radius: 25%;
     background: #00e1ff;
@@ -302,4 +301,37 @@ button:hover{
     font-family: 'Luckiest Guy';
     font-size: 3vw;
     text-align: center;
+}
+.choosing_color{
+    position: absolute;
+    top: 0vw;
+    left: 25vw;
+
+    width: 40vw;
+    height: 20vw;
+
+    border-style: solid;
+    background: black;
+    display: none;
+
+    text-align: center;
+}
+.choosing_color .azul,.choosing_color .pink,.choosing_color .yellow,.choosing_color .green{
+    width: 47.5%;
+    height: 47.5%;
+    margin: 0.1vw;
+    border: none;
+}
+
+.choosing_color .azul{
+    background: #3949ab !important; 
+}
+.choosing_color .pink{
+    background: #f50057 !important;
+}
+.choosing_color .yellow{
+    background: #ffd600 !important;
+}
+.choosing_color .green{
+    background: #00bfa5 !important;
 }

@@ -34,6 +34,9 @@ function formEnter(e) {
             } else
                 document.getElementById("notFound").textContent = "Name Unavailable"
         }
+        else if (r.data == "Maxed") {
+            document.getElementById("notFound").textContent = "Room already Full"
+        }
 
         else {
             window.location.replace('/game?room=' + room + "&id=" + r.data)
