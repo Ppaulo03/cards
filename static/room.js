@@ -162,6 +162,9 @@ function getRoom() {
                         }
                         lastStack = null;
                     }
+                    else {
+                        document.getElementById("comprar").style.display = "none";
+                    }
                 }
             }
         }
@@ -587,6 +590,7 @@ function buyCard(num, grayed) {
                         else if (!grayed) {
                             document.getElementById("comprar").style.display = "none";
                             waiting = false;
+                            buying = true;
                             axios.post('/pass', { room, value_id })
                         }
 
